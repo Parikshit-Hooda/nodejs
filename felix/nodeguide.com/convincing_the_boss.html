@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from nodeguide.com/convincing_the_boss.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 31 May 2017 19:40:45 GMT -->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Felix's Node.js Convincing the boss guide</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="css/screen.css">
+  <meta name="description" content="Unofficial guide to Node.JS">
+  <meta name="author" content="Felix Geisendörfer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="container">
+<p>
+  <a href="index.html">&#171; Home / All Guides</a>
+</p>
+<header>
+<h1 class="title">Felix's Node.js Convincing the boss guide</h1>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#bad-use-cases">Bad Use Cases</a><ul>
+<li><a href="#cpu-heavy-apps">CPU heavy apps</a></li>
+<li><a href="#simple-crud-html-apps">Simple CRUD / HTML apps</a></li>
+<li><a href="#nosql-node.js-buzzword-bullshit">NoSQL + Node.js + Buzzword Bullshit</a></li>
+</ul></li>
+<li><a href="#good-use-cases">Good Use Cases</a><ul>
+<li><a href="#json-apis">JSON APIs</a></li>
+<li><a href="#single-page-apps">Single page apps</a></li>
+<li><a href="#shelling-out-to-unix-tools">Shelling out to unix tools</a></li>
+<li><a href="#streaming-data">Streaming data</a></li>
+<li><a href="#soft-realtime-applications">Soft Realtime Applications</a></li>
+</ul></li>
+<li><a href="#convincing-the-boss">Convincing the boss</a><ul>
+<li><a href="#building-a-prototype">Building a prototype</a></li>
+<li><a href="#finding-developers">Finding developers</a></li>
+<li><a href="#vibrant-community">Vibrant community</a></li>
+<li><a href="#performance">Performance</a></li>
+<li><a href="#corporate-backing">Corporate Backing</a></li>
+</ul></li>
+<li><a href="#convincing-a-client">Convincing a client</a></li>
+</ul>
+</nav>
+<p>Now that you're all hyped up about using node.js, it's time to convince your boss. Well, maybe. I have had the pleasure of <a href="http://debuggable.com/">consulting</a> for different businesses on whether node.js is the right technology, and sometimes the answer is simply no.</p>
+<p>So this guide is my opinionated collection of advice for those of you that want to explore whether node.js makes sense for their business, and if so, how to convince the management.</p>
+<h2 id="bad-use-cases">Bad Use Cases</h2>
+<h3 id="cpu-heavy-apps">CPU heavy apps</h3>
+<p>Even though I love node.js, there are several use cases where it simply doesn't make sense. The most obvious such case is apps that are very heavy on CPU usage, and very light on actual I/O. So if you're planning to write video encoding software, artificial intelligence or similar CPU hungry software, please do not use node.js. While you can twist and bend things quite a bit, you'll probably get better results with C or C++.</p>
+<p>That being said, node.js allows you to easily write C++ addons, so you could certainly use it as a scripting engine on top of your super-secret algorithms.</p>
+<h3 id="simple-crud-html-apps">Simple CRUD / HTML apps</h3>
+<p>While node.js will eventually be a fun tool for writing all kinds of web applications, you shouldn't expect it to provide you with more benefits than PHP, Ruby or Python at this point. Yes, your app might end up slightly more scalable, but no - your app will not magically get more traffic just because you write it in node.js.</p>
+<p>The truth is that while we are starting to see good frameworks for node.js, there is nothing as powerful as Rails, CakePHP or Django on the scene yet. If most of your app is simply rendering HTML based on some database, using node.js will not provide many tangible business benefits yet.</p>
+<h3 id="nosql-node.js-buzzword-bullshit">NoSQL + Node.js + Buzzword Bullshit</h3>
+<p>If the architecture for your next apps reads like the cookbook of NoSQL ingredients, please pause for a second and read this.</p>
+<p>Yes, Redis, CouchDB, MongoDB, Riak, Casandra, etc. all look really tempting, but so did that red apple Eve couldn't resist. If you're already taking a technological risk with using node.js, you shouldn't multiply it with more technology you probably don't fully understand yet.</p>
+<p>Sure, there are legitimate use cases for choosing a document oriented database. But if you are trying to build a business on top of your software, sticking to conservative database technology (like postgres or mysql) might just outweigh the benefits of satisfying your inner nerd and impressing your friends.</p>
+<h2 id="good-use-cases">Good Use Cases</h2>
+<h3 id="json-apis">JSON APIs</h3>
+<p>Building light-weight REST / JSON api's is something where node.js really shines. Its non-blocking I/O model combined with JavaScript make it a great choice for wrapping other data sources such as databases or web services and exposing them via a JSON interface.</p>
+<h3 id="single-page-apps">Single page apps</h3>
+<p>If you are planning to write an AJAX heavy single page app (think gmail), node.js is a great fit as well. The ability to process many requests / seconds with low response times, as well as sharing things like validation code between the client and server make it a great choice for modern web applications that do lots of processing on the client.</p>
+<h3 id="shelling-out-to-unix-tools">Shelling out to unix tools</h3>
+<p>With node.js still being young, it's tempting to re-invent all kinds of software for it. However, an even better approach is tapping into the vast universe of existing command line tools. Node's ability to spawn thousands of child processes and treating their outputs as a stream makes it an ideal choice for those seeking to leverage existing software.</p>
+<h3 id="streaming-data">Streaming data</h3>
+<p>Traditional web stacks often treat http requests and responses as atomic events. However, the truth is that they are streams, and many cool node.js applications can be built to take advantage of this fact. One great example is parsing <a href="http://transloadit.com/blog/2010/12/realtime-encoding-over-150x-faster">file uploads in real time</a>, as well as building proxies between different data layers.</p>
+<h3 id="soft-realtime-applications">Soft Realtime Applications</h3>
+<p>Another great aspect of node.js is the ease at which you can develop soft real time systems. By that I mean stuff like twitter, chat software, sport bets or interfaces to instant messaging networks.</p>
+<p>But please be careful here, since JavaScript is a dynamic / garbage collected language, your response times may sometimes vary depending on how often and long the garbage collection kicks in (at which point your program is stopped). So don't try to build hard realtime systems in node, that require consistent response times. Erlang is probably a better choice for these kinds of applications.</p>
+<h2 id="convincing-the-boss">Convincing the boss</h2>
+<p>Once you have determined that your use case is a good fit for node.js, it's time to convince your boss or management of giving it a go.</p>
+<h3 id="building-a-prototype">Building a prototype</h3>
+<p>The best way to put your foot into the door, is to suggest taking a week to build a simple prototype of a certain part of the application you have in mind. It's usually easy to get management to agree to that, since they don't have to make a long term commitment yet.</p>
+<p>After you've got the approval, it's usually easy to get a basic system up and running, which will provide you with much more hard data and evidence of the benefits of node.js.</p>
+<h3 id="finding-developers">Finding developers</h3>
+<p>Think of JavaScript whatever you want, but at this point it's becoming the <a href="http://en.wikipedia.org/wiki/Lingua_franca">lingua franca</a> of computer programming. Pretty much every personal computer has one or more JavaScript interpreters (browsers) installed, which means it's almost impossible for most web developers to not learn it at some point in their career.</p>
+<p>This means that you get a huge and diverse pool of people you can hire, and you probably already have plenty of talent in your own company. So if you're working for a growing company, this is a strong argument favouring node.js.</p>
+<h3 id="vibrant-community">Vibrant community</h3>
+<p>At this point the node.js community is growing at an insane pace, attracting some of the smartest developers in the industry. This also means that the node ecosystem is growing every day, and it's also easy to get free and commercial support from various sources.</p>
+<h3 id="performance">Performance</h3>
+<p>This argument has to be carefully played, but if performance is a critical aspect of your application, node.js has lots to offer. With five companies (Mozilla, Google, Apple, Microsoft, Opera) competing over the best JavaScript implementation, node's underlaying interpreter (Google's v8) has become insanely fast, and getting better every day.</p>
+<p>Combining this with node's radical model of non-blocking I/O, you have to try very hard to create a sluggish application. Most node apps are easily capable of handling thousands of concurrent connections, on what could be considered moderate hardware by any standards.</p>
+<h3 id="corporate-backing">Corporate Backing</h3>
+<p>One of the risks with using a young open source project is the lack of longterm commitment by its authors. This isn't the case with node.js. Node is currently sponsored by <a href="http://joyent.com/">Joyent</a>, who has hired Ryan Dahl and several other core contributors, so there is a real economic force backing the future development of the project.</p>
+<p>Amongst other things, this has already given companies like Yahoo! and HP (formerly Palm) enough confidence to build their next generation products on node.js, so your boss can certainly relax by reading their reassuring testimonials.</p>
+<h2 id="convincing-a-client">Convincing a client</h2>
+<p>If you're a freelancer or small company doing contract work, convincing a client to use node.js might be a different story. After all they are usually very dependent on your judgement, as well as continuous support for the software you create for them.</p>
+<p>My advice here is to be a little more conservative, and double check if node is a good fit. If it is, make sure that you have the resources and time to support the application in the future. The node.js team is releasing new versions at a rapid pace, and so you should expect a little work every 3-6 months to update to the latest version.</p>
+  <div class="copyright">
+  © 2011, <a href="http://debuggable.com/">Debuggable Limited</a>.
+  </div>
+</div>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-3306079-11']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</body>
+
+<!-- Mirrored from nodeguide.com/convincing_the_boss.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 31 May 2017 19:40:45 GMT -->
+</html>
